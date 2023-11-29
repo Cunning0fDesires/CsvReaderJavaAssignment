@@ -21,7 +21,7 @@ public class CsvCustomerClientTest {
     private WebTestClient webTestClient;
 
     @Test
-    public void testUploadCsv() {
+    public void uploadCsvFile() {
         List<Customer> customers = Arrays.asList(
                 Customer.builder()
                         .customerRef("ref1")
@@ -43,7 +43,7 @@ public class CsvCustomerClientTest {
     }
 
     @Test
-    public void testGetCustomer() {
+    public void getCustomerByReference() {
         String customerRef = "ref1";
 
         webTestClient.get()

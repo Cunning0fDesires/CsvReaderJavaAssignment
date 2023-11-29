@@ -6,7 +6,6 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
@@ -43,40 +42,32 @@ public class CustomerControllerTest {
     }
 
     @Test
-    public void testUploadCsv() throws Exception {
-        // Mock data
+    public void uploadCsvFile() throws Exception {
         Customer customer1 = buildMockCustomer();
         Customer customer2 = buildMockCustomer();
 
-        // Perform the request
         mockMvc.perform(MockMvcRequestBuilders.post("/api/customers/upload")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(Arrays.asList(customer1, customer2))))
                 .andExpect(status().isOk());
 
-        // Verify service method was called
         verify(customerService).saveCustomers(anyList());
     }
 
     @Test
-    public void testGetCustomer() throws Exception {
-        // Mock data
+    public void getCustomerByReference() throws Exception {
         Customer mockCustomer = buildMockCustomer();
         String customerRef = mockCustomer.getCustomerRef();
 
-        // Mock service behavior
         when(customerService.getCustomerByRef(eq(customerRef))).thenReturn(mockCustomer);
 
-        // Perform the request
         mockMvc.perform(MockMvcRequestBuilders.get("/api/customers/{customerRef}", customerRef))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.customerRef").value(mockCustomer.getCustomerRef()));
 
-        // Verify service method was called
         verify(customerService).getCustomerByRef(eq(customerRef));
     }
 
-    // Helper method to build a mock Customer
     private Customer buildMockCustomer() {
         return Customer.builder()
                 .id(UUID.randomUUID())

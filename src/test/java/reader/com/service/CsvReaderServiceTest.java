@@ -1,26 +1,15 @@
 package reader.com.service;
 
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
-
-import org.springframework.beans.factory.annotation.Autowired;
 import reader.com.dto.Customer;
-import reader.com.service.CsvReaderService;
-
-import java.io.BufferedReader;
 import java.io.IOException;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThatThrownBy;
-import static org.mockito.Mockito.when;
-
 
 public class CsvReaderServiceTest {
-
     private CsvReaderService csvReaderService;
 
     @BeforeEach
@@ -28,7 +17,6 @@ public class CsvReaderServiceTest {
         csvReaderService = new CsvReaderService();
     }
 
-    //good data
     @Test
     public void readFile_SuccessfullyReadsFile_ReturnsCustomerList()  {
         List<Customer> customers = csvReaderService.readFile("src/test/resources/correct.csv");
@@ -44,24 +32,21 @@ public class CsvReaderServiceTest {
     }
 
     @Test
-    //empty file, throw exception
-    public void readFile_EmptyFile_ReturnsEmptyCustomerList() throws IOException {
-        // Assert
+    public void readFile_EmptyFile_ThrowException() throws IOException {
         assertThatThrownBy(() -> csvReaderService.readFile("src/test/resources/empty.csv"))
                 .isInstanceOf(RuntimeException.class)
-                .hasMessage("There is no data in input CSV file");    }
+                .hasMessage("There is no data in input CSV file");
+    }
 
     @Test
-    //no data but with headers, throw exception
-    public void readFile_ErrorReadingFile_ThrowsRuntimeException() {
+    public void readFile_NoDataToRead_ThrowException() {
         assertThatThrownBy(() -> csvReaderService.readFile("src/test/resources/nodata.csv"))
                 .isInstanceOf(RuntimeException.class)
                 .hasMessage("There is no data in input CSV file");
     }
 
     @Test
-    //non-existing file, throw exception
-    public void readFile_ExceptionDuringDataProcessing_ReturnsPartialCustomerList() {
+    public void readFile_FileDoesNotExist_ThrowException() {
         assertThatThrownBy(() -> csvReaderService.readFile("non-existing-file.csv"))
                 .isInstanceOf(RuntimeException.class)
                 .hasMessage("Error reading CSV file");
