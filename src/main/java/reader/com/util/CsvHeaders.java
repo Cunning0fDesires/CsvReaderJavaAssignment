@@ -1,7 +1,10 @@
 package reader.com.util;
 
+import lombok.Getter;
+
 import java.util.Arrays;
 
+@Getter
 public enum CsvHeaders {
     CUSTOMERREF("Customer Ref"),
     CUSTOMERNAME("Customer Name"),
@@ -18,13 +21,9 @@ public enum CsvHeaders {
         this.headerName = headerName;
     }
 
-    public String getHeaderValue() {
-        return this.headerName;
-    }
-
     public static String[] getAllHeaders() {
         return Arrays.stream(values())
-                .map(CsvHeaders::getHeaderValue)
+                .map(CsvHeaders::getHeaderName)
                 .toArray(String[]::new);
     }
 

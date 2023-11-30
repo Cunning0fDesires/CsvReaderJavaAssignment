@@ -24,13 +24,13 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
-public class CustomerControllerTest {
+public class CustomerResourceTest {
 
     @Mock
     private CustomerService customerService;
 
     @InjectMocks
-    private CustomerController customerController;
+    private CustomerResource customerResource;
 
     private MockMvc mockMvc;
 
@@ -38,7 +38,7 @@ public class CustomerControllerTest {
 
     @BeforeEach
     public void setup() {
-        mockMvc = MockMvcBuilders.standaloneSetup(customerController).build();
+        mockMvc = MockMvcBuilders.standaloneSetup(customerResource).build();
     }
 
     @Test

@@ -1,11 +1,8 @@
 package reader.com.util;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import reader.com.dto.Customer;
-import reader.com.repository.CustomerRepository;
-import reader.com.resource.CustomerController;
-import reader.com.service.CsvReaderService;
 import reader.com.service.CustomerClientService;
 import reader.com.service.FileReaderService;
 
@@ -13,19 +10,14 @@ import java.util.List;
 import java.util.Scanner;
 
 @Component
+@RequiredArgsConstructor
 public class ConsoleInterface {
-    private FileReaderService<Customer> fileReader;
-    private CustomerClientService customerClientService;
-
-    @Autowired
-    public void setSomeDependency(CustomerClientService customerClientService, FileReaderService<Customer> fileReader) {
-        this.customerClientService = customerClientService;
-        this.fileReader = fileReader;
-    }
+    private final FileReaderService<Customer> fileReader;
+    private final CustomerClientService customerClientService;
+    public static final String EXIT_WORD = "exit";
 
     public void start() {
         Scanner scanner = new Scanner(System.in);
-        String exitWord = "exit";
 
         while (true) {
             System.out.print("Welcome to the console program to parse and save files!"
@@ -33,7 +25,7 @@ public class ConsoleInterface {
             + "Please enter the location of the file you want to process");
             String userInput = scanner.nextLine();
 
-            if (userInput.equalsIgnoreCase(exitWord)) {
+            if (userInput.equalsIgnoreCase(EXIT_WORD)) {
                 System.out.println("Thank you for using the program, see you next time!");
                 break;
             } else {

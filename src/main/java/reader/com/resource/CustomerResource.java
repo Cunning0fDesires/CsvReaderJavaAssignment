@@ -1,7 +1,6 @@
 package reader.com.resource;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import reader.com.dto.Customer;
@@ -12,7 +11,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/customers")
 @RequiredArgsConstructor
-public class CustomerController {
+public class CustomerResource {
     private CustomerService customerService;
     @PostMapping("/upload")
     public void uploadCsv(@RequestBody List<Customer> customers) {
