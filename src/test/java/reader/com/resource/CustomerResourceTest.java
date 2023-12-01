@@ -10,15 +10,15 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
+import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
 import static org.mockito.ArgumentMatchers.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
-import reader.com.dto.Customer;
-import reader.com.service.CustomerService;
+import reader.com.repository.CustomerRepository;
+import reader.com.repository.entities.CustomerEntity;
 
-import java.util.Arrays;
-import java.util.UUID;
+import java.util.*;
 
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -27,8 +27,7 @@ import static org.mockito.Mockito.when;
 public class CustomerResourceTest {
 
     @Mock
-    private CustomerService customerService;
-
+    private CustomerRepository customerRepository;
     @InjectMocks
     private CustomerResource customerResource;
 
@@ -43,36 +42,50 @@ public class CustomerResourceTest {
 
     @Test
     public void uploadCsvFile() throws Exception {
-        Customer customer1 = buildMockCustomer();
-        Customer customer2 = buildMockCustomer();
+        CustomerEntity customer = buildMockCustomer();
 
         mockMvc.perform(MockMvcRequestBuilders.post("/api/customers/upload")
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsString(Arrays.asList(customer1, customer2))))
+                        .content(objectMapper.writeValueAsString(Collections.singletonList(customer))))
                 .andExpect(status().isOk());
-
-        verify(customerService).saveCustomers(anyList());
+        
+        verify(customerRepository).saveAll(Collections.singletonList(customer));
     }
 
     @Test
     public void getCustomerByReference() throws Exception {
-        Customer mockCustomer = buildMockCustomer();
-        String customerRef = mockCustomer.getCustomerRef();
-
-        when(customerService.getCustomerByRef(eq(customerRef))).thenReturn(mockCustomer);
-
-        mockMvc.perform(MockMvcRequestBuilders.get("/api/customers/{customerRef}", customerRef))
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$.customerRef").value(mockCustomer.getCustomerRef()));
-
-        verify(customerService).getCustomerByRef(eq(customerRef));
+            CustomerEntity mockCustomer = buildMockCustomer();
+            UUID customerRef = mockCustomer.getCustomerRef();
+        
+          when(customerRepository.findById(eq(customerRef))).thenReturn(Optional.of(mockCustomer));
+         
+                 mockMvc.perform(MockMvcRequestBuilders.get("/api/customers/{customerRef}", customerRef)
+                         .contentType(MediaType.APPLICATION_JSON))
+                         .andExpect(MockMvcResultMatchers.status().isOk())
+                         .andExpect(MockMvcResultMatchers.jsonPath("$.customerRef").value(customerRef.toString()))
+                         .andExpect(MockMvcResultMatchers.jsonPath("$.customerName").value("Mock Customer"));
     }
 
-    private Customer buildMockCustomer() {
-        return Customer.builder()
-                .id(UUID.randomUUID())
-                .customerRef("mockCustomerRef")
+    @Test
+    public void getNonExistingCustomer() throws Exception {
+        UUID customerRef = UUID.randomUUID();
+
+        when(customerRepository.findById(eq(customerRef))).thenReturn(Optional.empty());
+
+        mockMvc.perform(MockMvcRequestBuilders.get("/api/customers/{customerRef}", customerRef)
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(MockMvcResultMatchers.status().isNotFound());
+    }
+
+    private CustomerEntity buildMockCustomer() {
+        return CustomerEntity.builder()
+                .customerRef(UUID.randomUUID())
                 .customerName("Mock Customer")
+                .addressLine1("Address 11")
+                .town("Putney")
+                .country("UK")
+                .county("London")
+                .postcode("183389389hfj")
                 .build();
     }
 }

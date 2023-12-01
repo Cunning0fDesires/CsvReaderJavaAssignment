@@ -1,26 +1,15 @@
 package reader.com.dto;
 
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
 import jakarta.validation.constraints.NotBlank;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NonNull;
-import org.hibernate.annotations.GenericGenerator;
+import lombok.*;
+import org.springframework.lang.Nullable;
 
-
-import java.util.UUID;
-
-@Data
-@Entity
 @Builder
+@AllArgsConstructor
+@NoArgsConstructor
+@Data
 public class Customer {
-    @Id
-    @GeneratedValue(generator = "uuid2")
-    @GenericGenerator(name = "uuid2", strategy = "uuid2")
-    private UUID id;
     @NonNull
     @NotBlank
     private String customerRef;

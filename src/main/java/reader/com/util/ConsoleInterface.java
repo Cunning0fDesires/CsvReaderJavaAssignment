@@ -1,6 +1,6 @@
 package reader.com.util;
 
-import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import reader.com.dto.Customer;
 import reader.com.service.CustomerClientService;
@@ -10,11 +10,15 @@ import java.util.List;
 import java.util.Scanner;
 
 @Component
-@RequiredArgsConstructor
 public class ConsoleInterface {
-    private final FileReaderService<Customer> fileReader;
-    private final CustomerClientService customerClientService;
+    private FileReaderService<Customer> fileReader;
+    private CustomerClientService customerClientService;
     public static final String EXIT_WORD = "exit";
+    @Autowired
+    public void setServices(CustomerClientService customerClientService, FileReaderService<Customer> fileReader) {
+        this.customerClientService = customerClientService;
+        this.fileReader = fileReader;
+    }
 
     public void start() {
         Scanner scanner = new Scanner(System.in);

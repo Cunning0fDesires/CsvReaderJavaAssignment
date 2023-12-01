@@ -2,6 +2,20 @@ base:
     url:
         property: /api/customers
 spring:
+    application:
+        name: customers-service
+    cloud:
+      loadbalancer:
+          retry:
+              enabled: false
+      discovery:
+          client:
+              simple:
+                  instances:
+                      customers-service[0]:
+                          uri: http://localhost:80
+                      customers-service[1]:
+                              uri: http://localhost:81
     datasource:
         driver-class-name: org.postgresql.Driver
         password: avarer666

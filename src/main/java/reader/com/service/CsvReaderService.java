@@ -48,15 +48,14 @@ public class CsvReaderService implements FileReaderService<Customer> {
 
     public static Customer buildCustomer(CSVRecord record) {
         return Customer.builder()
-                .id(UUID.randomUUID())
-                .customerRef(record.get(CsvHeaders.CUSTOMERREF.getHeaderValue()))
-                .customerName(record.get(CsvHeaders.CUSTOMERNAME.getHeaderValue()))
-                .addressLine1(record.get(CsvHeaders.ADDRESSLINE1.getHeaderValue()))
-                .addressLine2(record.get(CsvHeaders.ADDRESSLINE2.getHeaderValue()))
-                .town(record.get(CsvHeaders.TOWN.getHeaderValue()))
-                .county(record.get(CsvHeaders.COUNTY.getHeaderValue()))
-                .country(record.get(CsvHeaders.COUNTRY.getHeaderValue()))
-                .postcode(record.get(CsvHeaders.POSTCODE.getHeaderValue()))
+                .customerRef(record.get(CsvHeaders.CUSTOMERREF.getHeaderName()))
+                .customerName(record.get(CsvHeaders.CUSTOMERNAME.getHeaderName()))
+                .addressLine1(record.get(CsvHeaders.ADDRESSLINE1.getHeaderName()))
+                .addressLine2(record.get(CsvHeaders.ADDRESSLINE2.getHeaderName()))
+                .town(record.get(CsvHeaders.TOWN.getHeaderName()))
+                .county(record.get(CsvHeaders.COUNTY.getHeaderName()))
+                .country(record.get(CsvHeaders.COUNTRY.getHeaderName()))
+                .postcode(record.get(CsvHeaders.POSTCODE.getHeaderName()))
                 .build();
     }
 }
