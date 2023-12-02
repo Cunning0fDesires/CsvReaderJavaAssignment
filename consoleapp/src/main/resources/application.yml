@@ -1,0 +1,38 @@
+base:
+    url:
+        property: http://localhost:8080/api/customers
+spring:
+    application:
+        name: customers-service
+    cloud:
+        loadbalancer:
+            retry:
+                enabled: false
+        discovery:
+            client:
+                simple:
+                    instances:
+                        customers-service[0]:
+                            uri: http://localhost:80
+                        customers-service[1]:
+                            uri: http://localhost:81
+    datasource:
+        driver-class-name: org.postgresql.Driver
+        password: avarer666
+        url: jdbc:postgresql://localhost:5432/customerdatabase
+        username: postgres
+    jpa:
+        database-platform: org.hibernate.dialect.PostgreSQLDialect
+        hibernate:
+            ddl-auto: update
+        properties:
+            hibernate:
+                format_sql: true
+        show-sql: true
+logging:
+    level:
+        org.springframework: DEBUG
+        root: debug
+        org.hibernate.sql: debug
+        org.hibernate.type.descriptor.sql.BasicBinder: TRACE
+
