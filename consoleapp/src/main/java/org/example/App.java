@@ -1,7 +1,7 @@
 package org.example;
 
-import org.example.client.CsvCustomerClient;
 import org.example.client.CustomerClient;
+import org.example.client.CustomerFeignClient;
 import org.example.dto.CustomerDto;
 import org.example.service.CsvReaderService;
 import org.example.service.CustomerClientService;
@@ -15,8 +15,8 @@ public class App {
     public static void main(String[] args) {
         SpringApplication.run(App.class, args);
         FileReaderService<CustomerDto> fileReaderService = new CsvReaderService();
-        CustomerClient customerClient = new CsvCustomerClient();
-        CustomerClientService customerClientService = new CustomerClientService(customerClient);
+        CustomerFeignClient customerFeignClient = new CustomerClient();
+        CustomerClientService customerClientService = new CustomerClientService(customerFeignClient);
 
         ConsoleInterface consoleInterface = new ConsoleInterface(fileReaderService, customerClientService);
         consoleInterface.start();
