@@ -1,37 +1,50 @@
 package org.example.dto;
 
-
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonInclude;
-import jakarta.validation.constraints.NotBlank;
 import lombok.*;
+
+import javax.validation.constraints.NotBlank;
 
 @Builder
 @AllArgsConstructor
-@NoArgsConstructor
+@NoArgsConstructor(force = true)
 @Data
-@JsonInclude(JsonInclude.Include.NON_NULL)
 public class CustomerDto {
     @NonNull
     @NotBlank
+    @JsonProperty("customerRef")
     private String customerRef;
+
     @NonNull
     @NotBlank
+    @JsonProperty("customerName")
     private String customerName;
+
     @NonNull
     @NotBlank
+    @JsonProperty("addressLine1")
     private String addressLine1;
+
+    @JsonProperty("addressLine2")
     private String addressLine2;
+
     @NonNull
     @NotBlank
+    @JsonProperty("town")
     private String town;
+
     @NonNull
     @NotBlank
+    @JsonProperty("county")
     private String county;
+
     @NonNull
     @NotBlank
+    @JsonProperty("country")
     private String country;
+
     @NonNull
     @NotBlank
+    @JsonProperty("postcode")
     private String postcode;
 }
