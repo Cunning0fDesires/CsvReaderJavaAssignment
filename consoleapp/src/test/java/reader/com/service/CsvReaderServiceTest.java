@@ -1,15 +1,11 @@
 package reader.com.service;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import org.example.dto.CustomerDto;
 import org.example.service.CsvReaderService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -24,17 +20,17 @@ public class CsvReaderServiceTest {
     }
 
     @Test
-    public void readFile_SuccessfullyReadsFile_ReturnsCustomerList()  {
+    public void readFile_SuccessfullyReadsFile_ReturnsCustomerList() {
         List<CustomerDto> customerDtos = csvReaderService.readFile("src/test/resources/correct.csv");
 
         assertThat(customerDtos).hasSize(1);
-        assertThat(customerDtos.get(0).getCustomerRef()).isEqualTo("123");
+        assertThat(customerDtos.get(0).getCustomerRef()).isEqualTo("4823fd9d-1af3-48ff-9acf-620e58c4e7f6");
         assertThat(customerDtos.get(0).getCustomerName()).isEqualTo("Yulia");
         assertThat(customerDtos.get(0).getAddressLine1()).isEqualTo("Putney 43");
         assertThat(customerDtos.get(0).getTown()).isEqualTo("Putney");
         assertThat(customerDtos.get(0).getCounty()).isEqualTo("London");
         assertThat(customerDtos.get(0).getCountry()).isEqualTo("UK");
-        assertThat(customerDtos.get(0).getPostcode()).isEqualTo("SW15 6QP");
+        assertThat(customerDtos.get(0).getPostcode()).isEqualTo("SW156QP");
     }
 
     @Test
