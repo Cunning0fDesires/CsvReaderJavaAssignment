@@ -1,8 +1,8 @@
 package org.example.repository.entities;
 
-import jakarta.persistence.*;
 import lombok.*;
 
+import javax.persistence.*;
 import java.util.UUID;
 
 @Entity
@@ -14,15 +14,39 @@ import java.util.UUID;
 public class PostcodeEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "postcode_id", columnDefinition = "uuid", updatable = false, nullable = false)
+    @Column(name = "postcode_id", columnDefinition = "uuid", updatable = false)
     private UUID postcodeId;
 
-    @NonNull
-    @Column(name = "postcode", nullable = false)
+
+    @Column(name = "postcode")
     private String postcode;
 
-    @NonNull
-    @ManyToOne
-    @JoinColumn(name = "town_id", nullable = false)
+
+    @ManyToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "town_id")
     private TownEntity town;
+
+    public UUID getPostcodeId() {
+        return postcodeId;
+    }
+
+    public void setPostcodeId(UUID postcodeId) {
+        this.postcodeId = postcodeId;
+    }
+
+    public String getPostcode() {
+        return postcode;
+    }
+
+    public void setPostcode(String postcode) {
+        this.postcode = postcode;
+    }
+
+    public TownEntity getTown() {
+        return town;
+    }
+
+    public void setTown(TownEntity town) {
+        this.town = town;
+    }
 }

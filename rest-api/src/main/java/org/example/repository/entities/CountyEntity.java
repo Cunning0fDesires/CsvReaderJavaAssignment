@@ -1,8 +1,8 @@
 package org.example.repository.entities;
 
-import jakarta.persistence.*;
 import lombok.*;
 
+import javax.persistence.*;
 import java.util.UUID;
 
 @Entity
@@ -14,15 +14,37 @@ import java.util.UUID;
 public class CountyEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "county_id", columnDefinition = "uuid", updatable = false, nullable = false)
+    @Column(name = "county_id", columnDefinition = "uuid", updatable = false)
     private UUID countyId;
 
-    @NonNull
-    @Column(name = "county_name", nullable = false)
+    @Column(name = "county_name")
     private String countyName;
 
-    @NonNull
-    @ManyToOne
-    @JoinColumn(name = "country_id", nullable = false)
+    @ManyToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "country_id")
     private CountryEntity country;
+
+    public UUID getCountyId() {
+        return countyId;
+    }
+
+    public void setCountyId(UUID countyId) {
+        this.countyId = countyId;
+    }
+
+    public String getCountyName() {
+        return countyName;
+    }
+
+    public void setCountyName(String countyName) {
+        this.countyName = countyName;
+    }
+
+    public CountryEntity getCountry() {
+        return country;
+    }
+
+    public void setCountry(CountryEntity country) {
+        this.country = country;
+    }
 }

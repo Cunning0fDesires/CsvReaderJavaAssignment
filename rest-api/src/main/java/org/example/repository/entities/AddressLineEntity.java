@@ -1,8 +1,8 @@
 package org.example.repository.entities;
 
-import jakarta.persistence.*;
 import lombok.*;
 
+import javax.persistence.*;
 import java.util.UUID;
 
 @Entity
@@ -17,7 +17,22 @@ public class AddressLineEntity {
     @Column(name = "address_line_id", columnDefinition = "uuid", updatable = false, nullable = false)
     private UUID addressLineId;
 
-    @NonNull
     @Column(name = "address_line")
     private String addressLine;
+
+    public UUID getAddressLineId() {
+        return addressLineId;
+    }
+
+    public void setAddressLineId(UUID addressLineId) {
+        this.addressLineId = addressLineId;
+    }
+
+    public String getAddressLine() {
+        return addressLine;
+    }
+
+    public void setAddressLine(String addressLine) {
+        this.addressLine = addressLine;
+    }
 }
